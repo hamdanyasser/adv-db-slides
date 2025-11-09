@@ -4,6 +4,20 @@ This repository contains comprehensive study materials for the Advanced Database
 
 ## 📚 Study Materials
 
+### 🔥 **NEW: PowerPoint Study Guides**
+
+#### **adv_db_midterm_5slides.pptx** ⭐ ULTRA-CONDENSED
+**Perfect for quick reference during exam!**
+- **Only 5 slides** with small text for maximum information density
+- ALL midterm questions with complete answers
+- Assignment 2 solutions (Arrays, JSON/JSONB, Data Types)
+- Assignment 3 Full Text Search solutions
+- Quick reference commands and operators
+- Font size 6-8pt to fit everything
+
+#### **adv_db_midterm_study_guide.pptx** (33 slides)
+Complete presentation with all topics in readable format.
+
 ### 1. **adv_db_merged_slides.pdf**
 Complete collection of all official course slides merged into one PDF.
 
