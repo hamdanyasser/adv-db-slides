@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Database - Open Book Exam Materials</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-top: 10px;
+        }
+
+        .notice {
+            background: rgba(255, 255, 255, 0.95);
+            border-left: 5px solid #f59e0b;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .notice h3 {
+            color: #d97706;
+            margin-bottom: 10px;
+        }
+
+        .notice p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .materials {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .materials h2 {
+            color: #1e40af;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+
+        .resource {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 5px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .resource:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .resource h3 {
+            color: #1e40af;
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .resource p {
+            color: #475569;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .resource a {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .resource a:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .stat-box .label {
+            color: #475569;
+            margin-top: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .topics {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .topics h4 {
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .topics ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .topics li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #475569;
+        }
+
+        .topics li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗄️ Advanced Database</h1>
+            <p>Open Book Exam Study Materials</p>
+            <p style="font-size: 0.9rem; margin-top: 15px;">Complete course slides + sample midterm solutions</p>
+        </div>
+
+        <div class="notice">
+            <h3>📋 Important Notice</h3>
+            <p>
+                <strong>This is for study purposes only.</strong> The sample midterm questions and solutions
+                below are based on <code>midterm-demo.docx</code> - practice material for studying.
+                The real exam will be different. This is an open-book exam, so you are allowed to bring
+                these materials with you!
+            </p>
+        </div>
+
+        <div class="materials">
+            <h2>📚 Study Materials</h2>
+
+            <div class="resource">
+                <h3>1. Complete Course Slides (Merged)</h3>
+                <p>
+                    All course slides merged into one PDF: The Basics, Database Administration,
+                    psql, pgAdmin, Data Types, and Full Text Search.
+                </p>
+                <a href="adv_db_merged_slides.pdf" target="_blank">📄 Open Course Slides (169 pages)</a>
+            </div>
+
+            <div class="resource">
+                <h3>2. Sample Midterm - Questions & Complete Solutions</h3>
+                <p>
+                    Full questions and step-by-step solutions for the SAMPLE midterm. Includes detailed
+                    explanations, SQL commands, and best practices for all topics.
+                </p>
+                <a href="midterm_sample_solutions.pdf" target="_blank">📝 Open Sample Exam Solutions</a>
+
+                <div class="topics">
+                    <h4>Topics Covered:</h4>
+                    <ul>
+                        <li>Managing database connections (pg_stat_activity, terminate backends)</li>
+                        <li>Creating users, roles, and granting permissions</li>
+                        <li>Table creation with various data types (SERIAL, VARCHAR, NUMERIC, TEXT)</li>
+                        <li>Loading data from CSV files</li>
+                        <li>String functions (LPAD, TRIM)</li>
+                        <li>Date and timestamp types</li>
+                        <li>Sequences (CREATE SEQUENCE, nextval, currval)</li>
+                        <li>Array operations and queries</li>
+                        <li>Backup and restore (pg_dump, pg_restore)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="resource">
+                <h3>3. Everything Combined (All-in-One)</h3>
+                <p>
+                    Single PDF containing all course slides followed by the sample midterm solutions.
+                    Perfect for printing or quick reference during the exam.
+                </p>
+                <a href="adv_db_merged_with_sample.pdf" target="_blank">📦 Open Combined PDF</a>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="number">169</div>
+                    <div class="label">Course Slide Pages</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">6</div>
+                    <div class="label">Topics Merged</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">15+</div>
+                    <div class="label">Sample Questions</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="materials">
+            <h2>💡 Study Tips</h2>
+            <div style="background: #f8fafc; border-radius: 12px; padding: 20px;">
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Review pg_stat_activity for monitoring connections</li>
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Practice GRANT/REVOKE for permissions</li>
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Remember: Arrays are 1-indexed (not 0!)</li>
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Use @> operator for "array contains" queries</li>
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Always use TIMESTAMP WITH TIME ZONE</li>
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Know the difference between pg_dump formats</li>
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Practice sequence operations (nextval, currval)</li>
+                    <li style="padding: 8px 0; color: #475569;"><strong>✓</strong> Test your queries on sample data</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Good luck on your exam! 🚀</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Remember: It's open book - use these materials wisely!</p>
+        </div>
+    </div>
+</body>
+</html>
