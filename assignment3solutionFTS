@@ -1,0 +1,37 @@
+CREATE TABLE library_books (
+	book_id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    fulltext TSVECTOR
+);
+
+UPDATE library_books SET fulltext =
+setweight(to_tsvector(COALESCE(title,'')),'A') ||
+setweight(to_tsvector(COALESCE(description,'')),'B');
+
+CREATE TRIGGER library_books_fulltextsearch_trigge
+BEFORE INSERT OR UPDATE OF title,description ON library_books
+FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger
+(fulltext,'pg_catalog.english',title,description);
+
+CREATE INDEX ix_library_books_fts_gin ON library_books
+USING GIN(fulltext);
+
+
+INSERT INTO library_books (title, description) VALUES
+('Journey to the Center of the Earth', 'A science fiction adventure novel by Jules Verne about a daring expedition to the earths core.'),
+('The Hobbit', 'A fantasy novel by J.R.R. Tolkien about Bilbo Baggins quest to reclaim the Lonely Mountain.'),
+('1984', 'A classic dystopian science fiction novel by George Orwell exploring themes of surveillance and totalitarianism.'),
+('Moby Dick', 'A classic novel by Herman Melville about the obsessive quest of Captain Ahab to hunt the white whale.'),
+('Dune', 'A science fiction novel by Frank Herbert exploring political intrigue and survival on the desert planet Arrakis.'),
+('The Chronicles of Narnia', 'A fantasy series by C.S. Lewis set in the magical land of Narnia, featuring epic battles of good versus evil.'),
+('Frankenstein', 'A classic science fiction novel by Mary Shelley about a scientist who creates a sentient creature.'),
+('The Three Musketeers', 'A classic adventure novel by Alexandre Dumas following the exploits of a young man and three guardsmen.'),
+('Twenty Thousand Leagues Under the Sea', 'A science fiction novel by Jules Verne detailing the underwater adventures of Captain Nemo and the Nautilus.'),
+('Harry Potter and the Philosophers Stone', 'A fantasy novel by J.K. Rowling about a young wizards first year at Hogwarts School of Witchcraft and Wizardry.');
+
+SELECT * FROM library_books WHERE fulltext @@ to_tsquery('fiction & adventure');
+
+SELECT * FROM library_books WHERE fulltext @@ to_tsquery('science | fantasy');
+
+SELECT * FROM library_books WHERE fulltext @@ to_tsquery('classic <3> novel')

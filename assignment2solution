@@ -1,0 +1,91 @@
+---Part1--- SERIAL,VARCHAR,TEXT, and TEMPORAL DATA TYPES
+--Table Creation
+CREATE TABLE library_books(
+	book_id SERIAL PRIMARY KEY,
+    title VARCHAR(100),
+    author TEXT,
+    published_date DATE,
+    available_time TIME
+);
+
+--Insert data
+INSERT INTO library_books (title, author, published_date, available_time) VALUES ('The Setup', 'Dan Bilzerian', '2020-11-14', '09:00:00');
+INSERT INTO library_books (title, author, published_date, available_time) VALUES ('1984', 'George Orwell', '1949-06-08', '10:30:00');
+INSERT INTO library_books (title, author, published_date, available_time) VALUES ('To Kill a Mockingbird', 'Harper Lee', '1960-07-11', '11:00:00');
+INSERT INTO library_books (title, author, published_date, available_time) VALUES ('The Great Gatsby', 'F. Scott Fitzgerald', '1925-04-10', '14:45:00');
+INSERT INTO library_books (title, author, published_date, available_time) VALUES ('Pride and Prejudice', 'Jane Austen', '1813-01-28', '08:15:00');
+
+--Query and Update
+SELECT * FROM library_books WHERE published_date > '1950-1-1';
+
+UPDATE library_books SET available_time ='12:00:00' WHERE book_id = 3; 
+
+SELECT * FROM library_books;
+
+---Part2--- ARRAYS
+
+--Table Creation
+CREATE TABLE students(
+	student_id SERIAL PRIMARY KEY,
+    full_name TEXT,
+    skills TEXT[]
+);
+
+--Insert Data
+INSERT INTO students (full_name,skills) VALUES ('Hussein El Saadi',ARRAY['Data Science', 'Database', 'Programming']);
+INSERT INTO students (full_name,skills) VALUES ('Haidar Al Harake',ARRAY['Computing','Web Development']);
+INSERT INTO students (full_name,skills) VALUES ('Ahmad Taher',ARRAY['Communication','Mobile Development']);
+
+--Query and Update
+SELECT * FROM students WHERE skills @> ARRAY['SQL'];
+
+UPDATE students SET skills = array_append(skills,'Linear ALgebra') WHERE student_id =1;
+
+UPDATE students SET skills = array_remove(skills,'Communication') WHERE full_name = 'Ahmad Taher';
+
+SELECT * FROM students;
+
+---Part 3--- JSON and JSONB
+--Table Creation
+CREATE TABLE products(
+	product_id SERIAL PRIMARY KEY,
+    details JSONB
+);
+
+--Insert Data
+INSERT INTO products (details)
+VALUES 
+('{
+    "name": "Smartphone",
+    "price": 699.99,
+    "tags": ["electronics", "gadgets", "mobile"]
+}');
+INSERT INTO products (details) VALUES
+('{
+    "name": "Laptop",
+    "price": 1299.50,
+    "tags": ["electronics", "computers"]
+}');
+INSERT INTO products (details) VALUES
+('{
+    "name": "Wireless Earbuds",
+    "price": 199.99,
+    "tags": ["electronics", "audio", "gadgets"]
+}');
+INSERT INTO products (details) VALUES(
+'{
+    "name":"Apple Watch",
+    "price":549.99,
+    "tags":["electronics","gadgets"]
+    }'
+);
+
+--Query and Update
+SELECT * FROM products WHERE details->'tags'?'electronics';
+
+UPDATE products SET details = details||'{"stock":50}'::jsonb WHERE product_id = 2
+
+UPDATE products SET details = details - 'tags' WHERE product_id = 2;
+
+SELECT * FROM products;
+

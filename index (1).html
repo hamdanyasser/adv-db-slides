@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 COMP411 Midterm Adventure – Data Structure Midterm Made Easy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            height: 30px;
+            margin: 30px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* World Cards */
+        .worlds {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .world-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .world-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .world-card.world-1 {
+            border-top: 5px solid #3b82f6;
+            animation-delay: 0s;
+        }
+
+        .world-card.world-2 {
+            border-top: 5px solid #a855f7;
+            animation-delay: 0.2s;
+        }
+
+        .world-card.world-3 {
+            border-top: 5px solid #10b981;
+            animation-delay: 0.4s;
+        }
+
+        .world-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .world-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* World Sections */
+        .world-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .world-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .world-section .intro {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid;
+        }
+
+        .world-1-section .intro { border-left-color: #3b82f6; }
+        .world-2-section .intro { border-left-color: #a855f7; }
+        .world-3-section .intro { border-left-color: #10b981; }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .checklist li {
+            padding: 12px 20px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+
+        .checklist li:hover {
+            background: #f8fafc;
+            transform: translateX(5px);
+        }
+
+        .checklist li.checked {
+            background: #dcfce7;
+            border-color: #10b981;
+            text-decoration: line-through;
+        }
+
+        .checklist li::before {
+            content: "☐ ";
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
+        .checklist li.checked::before {
+            content: "✅ ";
+        }
+
+        /* Level Cards */
+        .level-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 3px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .level-card.completed {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+            position: relative;
+        }
+
+        .level-card.completed::after {
+            content: "✅";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            animation: celebrate 0.5s ease;
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .level-header h3 {
+            font-size: 1.5rem;
+            color: #1f2937;
+        }
+
+        .level-tag {
+            background: #6366f1;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Question Box */
+        .question-box {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #6366f1;
+        }
+
+        .question-box h4 {
+            color: #4f46e5;
+            margin-bottom: 15px;
+        }
+
+        .question-box pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Try It Section */
+        .try-it {
+            margin: 20px 0;
+        }
+
+        .try-it h4 {
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .try-it textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        /* Buttons */
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.hint-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        button.master-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        button.attempt-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        /* Hints */
+        .hints-container {
+            margin: 20px 0;
+        }
+
+        .hint {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .hint.visible {
+            display: block;
+        }
+
+        /* Teacher Method */
+        .teacher-method {
+            margin: 20px 0;
+        }
+
+        .teacher-toggle {
+            background: #6366f1;
+            color: white;
+            width: 100%;
+            text-align: left;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .teacher-toggle:hover {
+            background: #4f46e5;
+        }
+
+        .teacher-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #eef2ff;
+            border-radius: 0 0 10px 10px;
+            margin-top: -10px;
+            padding: 0 20px;
+        }
+
+        .teacher-content.open {
+            max-height: 2000px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .teacher-step {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #6366f1;
+        }
+
+        .teacher-step strong {
+            color: #4f46e5;
+        }
+
+        /* Final Answer Badge */
+        .final-answer {
+            display: inline-block;
+            background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.4);
+        }
+
+        /* Cheat Sheet */
+        .cheat-sheet {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .cheat-sheet h4 {
+            color: #d97706;
+            margin-bottom: 15px;
+        }
+
+        .cheat-sheet pre {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-10deg); }
+            75% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .world-section h2 { font-size: 1.8rem; }
+            .level-header { flex-direction: column; align-items: flex-start; }
+        }
+
+        /* Scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Key Insight boxes */
+        .key-insight {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .key-insight strong {
+            color: #1e40af;
+        }
+
+        /* Visualization boxes */
+        .visualization {
+            background: #f1f5f9;
+            border: 2px dashed #64748b;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>🎮 COMP411 Midterm Adventure</h1>
+            <p>Loops • Recursion • Binary Search Trees explained like a game</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <!-- World Navigation Cards -->
+        <div class="worlds">
+            <div class="world-card world-1" onclick="scrollToWorld('world1')">
+                <h2>🌍 World 1</h2>
+                <h3>Loop Complexity Arena</h3>
+                <p>Master nested loops, exponential growth, and variable modifications. Learn to spot patterns and calculate complexity in seconds!</p>
+                <p><strong>5 Levels</strong></p>
+            </div>
+            <div class="world-card world-2" onclick="scrollToWorld('world2')">
+                <h2>🧪 World 2</h2>
+                <h3>Recursion Lab</h3>
+                <p>Decode recursive algorithms, build recursion trees, and understand exponential vs logarithmic patterns.</p>
+                <p><strong>4 Levels</strong></p>
+            </div>
+            <div class="world-card world-3" onclick="scrollToWorld('world3')">
+                <h2>🌲 World 3</h2>
+                <h3>BST Forest</h3>
+                <p>Explore balanced trees, understand InsertBalanced, and learn when trees become skewed.</p>
+                <p><strong>5 Levels</strong></p>
+            </div>
+        </div>
+
+        <!-- World 1: Loop Complexity -->
+        <div class="world-section world-1-section" id="world1">
+            <h2>🌍 World 1 – Loop Complexity Arena</h2>
+
+            <div class="intro">
+                <h3>What you'll master in this world:</h3>
+                <p>Loop complexity is all about recognizing patterns! Once you see the pattern, calculating Big-Theta becomes easy.</p>
+
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Recognize linear loops (i++, i--) → Θ(n)</li>
+                    <li onclick="toggleCheck(this)">Recognize exponential growth loops (i *= 2) → Θ(log n)</li>
+                    <li onclick="toggleCheck(this)">Multiply nested loops to get total cost</li>
+                    <li onclick="toggleCheck(this)">Watch out for variable modifications in inner loops!</li>
+                    <li onclick="toggleCheck(this)">Drop constants and simplify to Big-Theta</li>
+                </ul>
+
+                <div class="cheat-sheet">
+                    <h4>💡 Quick Reference – Common Loop Patterns</h4>
+                    <pre>for (i = 0; i < n; i++)           → Θ(n)      Linear</pre>
+                    <pre>for (i = 1; i < n; i *= 2)        → Θ(log n)  Exponential growth</pre>
+                    <pre>for (i = 1; i < n; i *= 3)        → Θ(log n)  Base doesn't matter!</pre>
+                    <pre>Nested: n × n                     → Θ(n²)     Quadratic</pre>
+                    <pre>Nested: n × log n                 → Θ(n log n) Linearithmic</pre>
+                </div>
+            </div>
+
+            <!-- Level 1 -->
+            <div class="level-card" data-level="1">
+                <div class="level-header">
+                    <h3>Level 1 – Simple Nested Loop</h3>
+                    <span class="level-tag">Section I, Q1</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>for (int i = 1; i <= n/4; i++) {
+    for (int j = 1; j <= 100; j++) {
+        // Some constant work
+    }
+}</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here... (e.g., Θ(n), Θ(n²), etc.)"></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Start with the outer loop. How many times does i increment? Remember, i goes from 1 to n/4.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> The inner loop runs 100 times every single time. Is 100 related to n? Nope! It's a constant.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Multiply: (n/4) iterations × 100 iterations = 25n total operations. Now simplify!
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> In Big-Theta, we drop constants. So 25n becomes just Θ(n).
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Analyze the outer loop</strong><br>
+                            i goes from 1 to n/4 with linear increment (i++). Number of iterations = n/4
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Analyze the inner loop</strong><br>
+                            j goes from 1 to 100 with linear increment (j++). Number of iterations = 100 (constant, Θ(1))
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Calculate total complexity</strong><br>
+                            T(n) = (n/4) × 100 × c = 25nc
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Simplify to Big-Theta</strong><br>
+                            Drop constants 25 and c: T(n) = Θ(n)
+                        </div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Constant inner loops are Θ(1) regardless of their value (100 is still constant). The outer loop determines the overall complexity!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 2 -->
+            <div class="level-card" data-level="2">
+                <div class="level-header">
+                    <h3>Level 2 – Exponential Growth</h3>
+                    <span class="level-tag">Section I, Q2</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>for (int i = 1; i <= n; ) {
+    i = i * 2;
+}</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Track how i changes: i = 1, 2, 4, 8, 16, 32, ... See the pattern?
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> i doubles each time! This is exponential growth: i = 2^k where k is the iteration number.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> The loop stops when 2^k > n. Solve for k: k = log₂(n)
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> k is the number of iterations, so T(n) = c × log₂(n) = Θ(log n)
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Track loop progression</strong><br>
+                            i = 1, 2, 4, 8, 16, ..., 2^k where 2^k ≤ n
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Pattern recognition</strong><br>
+                            i = 2^k, so when loop stops: 2^k = n
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Solve for iterations</strong><br>
+                            Taking log₂ of both sides: k = log₂(n). This is the number of iterations.
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Final complexity</strong><br>
+                            T(n) = c × log₂(n) = Θ(log n)
+                        </div>
+                        <div class="visualization">
+Iteration 1: i = 1 = 2^0
+Iteration 2: i = 2 = 2^1
+Iteration 3: i = 4 = 2^2
+Iteration 4: i = 8 = 2^3
+...
+Iteration k: i = 2^k ≈ n
+
+Therefore: k = log₂(n)</div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Exponential growth (×2, ×3, etc.) leads to logarithmic time. Doubling the input only adds ONE more iteration!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(log n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="level-card" data-level="3">
+                <div class="level-header">
+                    <h3>Level 3 – Mixed Growth (Linear × Logarithmic)</h3>
+                    <span class="level-tag">Section I, Q3</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>for (int i = n/2; i <= n; i++) {
+    for (int j = 1; j <= n; ) {
+        j = j * 3;
+    }
+}</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Outer loop: i goes from n/2 to n. How many steps? About n/2 ≈ Θ(n)
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> Inner loop: j triples (×3) each time: j = 1, 3, 9, 27, ... Pattern: j = 3^k
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Inner loop stops when 3^k > n, so k = log₃(n) iterations
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> Multiply: n × log₃(n). But log₃ = log₂ in Big-Theta, so answer is Θ(n log n)
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Analyze outer loop</strong><br>
+                            i from n/2 to n with i++. Count: n - n/2 + 1 ≈ n/2 ≈ Θ(n)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Analyze inner loop</strong><br>
+                            j triples: 1, 3, 9, 27, ... Pattern: j = 3^k. Stops when 3^k > n, so k = log₃(n)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Calculate total complexity</strong><br>
+                            T(n) = (n/2) × log₃(n) × c
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Simplify</strong><br>
+                            Drop 1/2, log₃(n) is same order as log₂(n) (write as log n), drop c
+                        </div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Linear outer × logarithmic inner = n log n. Base of logarithm doesn't matter in Big-Theta (log₃ = log₂ = log)!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(n log n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 4 -->
+            <div class="level-card" data-level="4">
+                <div class="level-header">
+                    <h3>Level 4 – Triple Nested with Modified Variables (TRICKY!)</h3>
+                    <span class="level-tag">Section I, Q4</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>for (int i = 1; i <= n; ) {
+    for (int j = 1; j <= n; ) {
+        for (int k = 1; k <= n; ) {
+            i = i * 2;
+            k = k * 2;
+            j++;
+        }
+    }
+}</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Don't assume 3 nested loops = Θ(n³)! Look closely at what happens in the innermost loop.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> THREE variables change: i doubles, k doubles, j increments. This is unusual!
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> The innermost loop doubles k, so it runs log₂(n) times. But it ALSO doubles i!
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> After log₂(n) doublings of i, the outer loop terminates. The middle loop runs ≈ n times. Total ≈ n iterations!
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Key observation</strong><br>
+                            THREE things happen in innermost loop: i doubles, k doubles, j increments by 1
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Critical insight</strong><br>
+                            i doubles in innermost loop, so outer loop terminates much sooner than expected!
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Trace execution</strong><br>
+                            • For each j iteration: k runs log₂(n) times (doubling)<br>
+                            • Each k iteration also doubles i<br>
+                            • After log₂(n) doublings, i reaches n and outer loop stops
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Teacher's formula</strong><br>
+                            T(n) = 3c + 2(n/log₂n + 1) + 2(n/log₂n) × (log₂n + 1) = 3c + 2n + 4n/log₂n + 2 ≈ 2n
+                        </div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> ALWAYS check if outer variables are modified in inner loops! Modified variables drastically reduce total iterations. Three nested loops ≠ automatically Θ(n³)!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 5 -->
+            <div class="level-card" data-level="5">
+                <div class="level-header">
+                    <h3>Level 5 – Logarithmic Outer with Modified Inner</h3>
+                    <span class="level-tag">Section I, Q5</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>for (int i = 1; i <= log₂(n); ) {
+    for (int j = 1; j <= n; ) {
+        i++;
+        j *= 2;
+    }
+}</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Inner loop: j doubles (j *= 2), so j runs log₂(n) times.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> But wait! i++ happens INSIDE the inner loop. So i increases rapidly!
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Each complete inner loop increases i by log₂(n). Outer condition is i ≤ log₂(n).
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> So outer loop runs only about 3 times (constant!). Total complexity = Θ(log n).
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Analyze inner loop</strong><br>
+                            j doubles (j *= 2), so j runs log₂(n) times
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Key insight</strong><br>
+                            i++ happens in inner loop! So i increases by log₂(n) after one complete inner loop
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Count outer loop iterations</strong><br>
+                            Condition is i ≤ log₂(n). Each inner loop increases i by log₂(n). So outer loop runs approximately 3 times (constant)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Teacher's formula</strong><br>
+                            T(n) = 4c + 3 × ½log₂(n) = Θ(log₂ n)
+                        </div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> When outer variable is modified inside, count actual iterations carefully. Fast inner growth limits outer loop executions!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(log n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <!-- World 2: Recursion -->
+        <div class="world-section world-2-section" id="world2">
+            <h2>🧪 World 2 – Recursion Lab</h2>
+
+            <div class="intro">
+                <h3>What you'll master in this world:</h3>
+                <p>Recursion can seem scary, but it's just a pattern! Build recursion trees, count the work at each level, and you'll see the complexity emerge.</p>
+
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Build recurrence relations from recursive code</li>
+                    <li onclick="toggleCheck(this)">Expand recurrences to find patterns</li>
+                    <li onclick="toggleCheck(this)">Draw recursion trees to visualize complexity</li>
+                    <li onclick="toggleCheck(this)">Recognize T(n) = c + T(n-k) → Θ(n)</li>
+                    <li onclick="toggleCheck(this)">Recognize T(n) = c + 2T(n-1) → Θ(2^n)</li>
+                    <li onclick="toggleCheck(this)">Recognize T(n) = n + T(n/2) → Θ(n log n)</li>
+                </ul>
+
+                <div class="cheat-sheet">
+                    <h4>💡 Quick Reference – Recursion Patterns</h4>
+                    <pre>T(n) = c + T(n-k)           → Θ(n)       Linear reduction</pre>
+                    <pre>T(n) = c + T(n/2)           → Θ(log n)   Divide by constant</pre>
+                    <pre>T(n) = c + 2T(n-1)          → Θ(2^n)     Exponential branching</pre>
+                    <pre>T(n) = 2T(n/2) + n          → Θ(n log n) MergeSort pattern</pre>
+                    <pre>T(n) = n + T(n/2)           → Θ(n log n) QuickSort pattern</pre>
+                </div>
+            </div>
+
+            <!-- Level 6 -->
+            <div class="level-card" data-level="6">
+                <div class="level-header">
+                    <h3>Level 6 – Linear Reduction (p+2, r-2)</h3>
+                    <span class="level-tag">Section II, Q1</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>Algo1 (A, p, r) {
+    If p >= r
+        Return 1
+    return Algo1 (A, p+2, r-2)
+}
+// Called initially: Algo1(A, 1, n)</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> The range is r - p. Initially it's n - 1 ≈ n.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> Each recursive call: p increases by 2, r decreases by 2. Range shrinks by 4!
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Recurrence: T(n) = c + T(n-4). Expand: c + c + c + ... How many c's?
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> When n - 4k ≤ 0, recursion stops. So k = n/4. Total = (n/4)c = Θ(n)
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Recurrence relation</strong><br>
+                            T(n) = c + T(n-4) (range shrinks by 4 each time: both p increases by 2 and r decreases by 2)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Expand recurrence</strong><br>
+                            T(n) = c + T(n-4)<br>
+                            = 2c + T(n-8)<br>
+                            = 3c + T(n-12)<br>
+                            Pattern: kc + T(n-4k)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Find when it stops</strong><br>
+                            n - 4k ≤ 0, so k = n/4
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Calculate total</strong><br>
+                            T(n) = (n/4)c = Θ(n)
+                        </div>
+                        <div class="visualization">
+Recursion Tree (straight line):
+
+Level 0: n                  work = c
+Level 1: n-4                work = c
+Level 2: n-8                work = c
+...
+Level k: n-4k ≈ 0           work = c
+
+Total levels = n/4
+Total work = (n/4) × c = Θ(n)</div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> T(n) = c + T(n-k) always gives Θ(n) regardless of k. Linear reduction → straight-line recursion tree!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 7 -->
+            <div class="level-card" data-level="7">
+                <div class="level-header">
+                    <h3>Level 7 – Exponential Growth (p*2)</h3>
+                    <span class="level-tag">Section II, Q2</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>Algo1 (A, p, r) {
+    If p >= r
+        Return 1
+    return Algo1 (A, p*2, r)
+}
+// Called initially: Algo1(A, 1, n)</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> p doubles each call: 1, 2, 4, 8, ... Stops when p >= n.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> This pattern creates a recurrence T(n) = c + 2T(n-1). Why 2T? Because the branching mirrors exponential growth.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Expand: T(n) = c + 2(c + 2T(n-2)) = 3c + 4T(n-2) = 7c + 8T(n-3)...
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> Pattern: (2^k - 1)c + 2^k × T(n-k). When k = n: T(n) ≈ 2^n
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Pattern analysis</strong><br>
+                            p doubles each call: 1, 2, 4, 8, ... Stops when p >= n
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Teacher's recurrence</strong><br>
+                            T(n) = c + 2T(n-1) (models exponential growth)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Expand</strong><br>
+                            T(n) = c + 2T(n-1)<br>
+                            = c + 2(c + 2T(n-2))<br>
+                            = 3c + 4T(n-2)<br>
+                            = 7c + 8T(n-3)<br>
+                            Pattern: (2^k - 1)c + 2^k × T(n-k)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: When k = n</strong><br>
+                            T(n) = (2^n - 1)c + 2^n × c = 2^(n+1)c - c
+                        </div>
+                        <div class="visualization">
+Recursion Tree:
+
+Level 0: 1 node  = 2^0          work = c
+Level 1: 2 nodes = 2^1          work = 2c
+Level 2: 4 nodes = 2^2          work = 4c
+Level 3: 8 nodes = 2^3          work = 8c
+...
+Level n: 2^n nodes              work = 2^n × c
+
+Total = c + 2c + 4c + ... + 2^n × c = (2^(n+1) - 1)c ≈ Θ(2^n)</div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Exponential parameter growth creates exponential time. T(n) = c + 2T(n-1) expands to Θ(2^n)!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(2^n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 8 -->
+            <div class="level-card" data-level="8">
+                <div class="level-header">
+                    <h3>Level 8 – Two Recursive Calls (Binary Tree)</h3>
+                    <span class="level-tag">Section II, Q3</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>Algo1 (A, p, r) {
+    If p >= r
+        Return 1
+    Algo1 (A, p, r-1)
+    Algo1 (A, p+1, r)
+    return
+}
+// Called initially: Algo1(A, 1, n)</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> TWO recursive calls! Both reduce the range by 1.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> Recurrence: T(n) = c + T(n-1) + T(n-1) = c + 2T(n-1)
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> This creates a binary tree! Each node has 2 children.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> Tree depth = n. Total nodes = 2^0 + 2^1 + ... + 2^(n-1) = 2^n - 1 = Θ(2^n)
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Recurrence</strong><br>
+                            T(n) = c + T(n-1) + T(n-1) = c + 2T(n-1)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Tree structure</strong><br>
+                            Level 0: 1 node (2^0)<br>
+                            Level 1: 2 nodes (2^1)<br>
+                            Level 2: 4 nodes (2^2)<br>
+                            Level k: 2^k nodes<br>
+                            Tree depth: n levels
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Total nodes</strong><br>
+                            Sum = 2^0 + 2^1 + 2^2 + ... + 2^(n-1) = 2^n - 1
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Final complexity</strong><br>
+                            T(n) = Θ(2^n)
+                        </div>
+                        <div class="visualization">
+Binary Recursion Tree:
+
+                  (n)
+                /     \
+            (n-1)     (n-1)
+            /  \      /  \
+         (n-2)(n-2)(n-2)(n-2)
+         ...
+
+Level 0: 2^0 = 1 nodes
+Level 1: 2^1 = 2 nodes
+Level 2: 2^2 = 4 nodes
+...
+Level n-1: 2^(n-1) nodes
+
+Total = 2^n - 1 nodes</div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Two recursive calls → binary tree structure. Binary recursion with linear reduction = Θ(2^n)!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(2^n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 9 -->
+            <div class="level-card" data-level="9">
+                <div class="level-header">
+                    <h3>Level 9 – Recursion with Helper (QuickSort Pattern)</h3>
+                    <span class="level-tag">Section II, Q4</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>Algo1 (A, p, r) {
+    If p >= r
+        Return 1
+    q ← Algo2 (A, p, r)  // Θ(ℓ) where ℓ = r-p
+    return Algo1 (A, p, q)
+}
+// Given: Algo2 has complexity Θ(ℓ)
+// Given: Always p < q < r</pre>
+                    <p><strong>Find the time complexity in Big-Theta notation (best case, balanced split).</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Type your answer here..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Algo2 costs Θ(ℓ) where ℓ = r - p ≈ n. So Algo2 does n work.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> Best case: q is the middle, so we recurse on half the array.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Recurrence: T(n) = n×c + T(n/2)
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> Expand: n + n/2 + n/4 + ... Each level does ≈ n work. Depth = log₂(n). Total = n × log₂(n)
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Algo2 cost</strong><br>
+                            ℓ = r - p ≈ n, so Algo2 costs Θ(n)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Best case recurrence</strong><br>
+                            If q ≈ (p+r)/2 (middle), then T(n) = n×c + T(n/2)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Expand</strong><br>
+                            T(n) = n×c + T(n/2)<br>
+                            = n×c + (n/2)×c + T(n/4)<br>
+                            = (3n/2)×c + T(n/4)<br>
+                            Each level does ≈ n×c work<br>
+                            Tree depth: log₂(n)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Total</strong><br>
+                            n×c × log₂(n) levels = n×c×log₂(n)
+                        </div>
+                        <div class="visualization">
+Recursion Tree (best case):
+
+Level 0: n                      work = n
+Level 1: n/2                    work = n/2
+Level 2: n/4                    work = n/4
+...
+Level log₂(n): 1                work = 1
+
+Total levels = log₂(n)
+Work per level ≈ n
+Total = n × log₂(n)</div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> This is the QuickSort/MergeSort pattern! T(n) = n×c + T(n/2) gives Θ(n log n). Best case (balanced): Θ(n log n), Worst case (unbalanced): Θ(n²)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(n log n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <!-- World 3: BST -->
+        <div class="world-section world-3-section" id="world3">
+            <h2>🌲 World 3 – BST Forest</h2>
+
+            <div class="intro">
+                <h3>What you'll master in this world:</h3>
+                <p>Binary Search Trees are all about balance! Learn how InsertBalanced builds perfectly balanced trees, and what happens when you insert in the wrong order.</p>
+
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Understand how InsertBalanced works (always pick the middle!)</li>
+                    <li onclick="toggleCheck(this)">Calculate height of balanced trees: h = ⌈log₂(n+1)⌉</li>
+                    <li onclick="toggleCheck(this)">Recognize when trees become skewed (sorted insertion)</li>
+                    <li onclick="toggleCheck(this)">Know InsertBalanced complexity: Θ(n log n)</li>
+                    <li onclick="toggleCheck(this)">Rebalance trees using in-order traversal</li>
+                </ul>
+
+                <div class="cheat-sheet">
+                    <h4>💡 Quick Reference – BST Facts</h4>
+                    <pre>Balanced tree height:    h = ⌈log₂(n+1)⌉ ≈ log₂(n)</pre>
+                    <pre>Skewed tree height:      h = n (worst case!)</pre>
+                    <pre>InsertBalanced:          Always picks middle → balanced</pre>
+                    <pre>Sorted insertion:        Creates skewed tree</pre>
+                    <pre>In-order traversal:      Gives sorted array from BST</pre>
+                </div>
+            </div>
+
+            <!-- Level 10 -->
+            <div class="level-card" data-level="10">
+                <div class="level-header">
+                    <h3>Level 10 – How InsertBalanced Works</h3>
+                    <span class="level-tag">Section III, Part 1</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <pre>InsertBalanced (T, A, p, r) {
+    If p > r
+        Return 1
+    q ← (p+r)/2
+    Insert(T, A[q])  // Θ(log₂ n)
+    InsertBalanced (T, A, p, q-1)
+    InsertBalanced (T, A, q+1, r)
+    Return 1
+}
+// Given: Sorted array with 1000 elements</pre>
+                    <p><strong>Explain how this algorithm works and why it creates a balanced tree.</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Explain in your own words how InsertBalanced works..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> The key is q ← (p+r)/2. This finds the MIDDLE element of the current range.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> Inserting the middle element first ensures equal distribution: half the elements go left, half go right.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Then it recursively does the same for the left half and right half.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> Example: [1,2,3,4,5,6,7] → inserts 4 first (root), then 2 (left), 6 (right), then 1,3,5,7.
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Calculate middle index</strong><br>
+                            q = (p+r)/2 finds the middle element of the current interval
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Insert middle element</strong><br>
+                            Insert A[q] into tree T
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Recursively process left half</strong><br>
+                            InsertBalanced(T, A, p, q-1)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Recursively process right half</strong><br>
+                            InsertBalanced(T, A, q+1, r)
+                        </div>
+                        <div class="visualization">
+Example: [1, 2, 3, 4, 5, 6, 7]
+
+Step 1: Insert 4 (middle)      Tree:    4
+
+Step 2: Insert 2 (middle of [1,2,3])    4
+                                       /
+                                      2
+
+Step 3: Insert 6 (middle of [5,6,7])    4
+                                       / \
+                                      2   6
+
+Step 4: Insert 1, 3, 5, 7              4
+                                      / \
+                                     2   6
+                                    / \ / \
+                                   1  3 5  7
+
+Result: Perfectly balanced! Height = 3</div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Always choosing the middle ensures equal distribution. Left subtree gets ⌊n/2⌋ elements, right gets ⌈n/2⌉. Both approximately equal → height = log₂(n)!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Balanced Tree ✓</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 11 -->
+            <div class="level-card" data-level="11">
+                <div class="level-header">
+                    <h3>Level 11 – Is Tree Balanced? What is Height?</h3>
+                    <span class="level-tag">Section III, Part 2</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <p><strong>Given a binary search tree with 1000 elements created from a sorted array using InsertBalanced:</strong></p>
+                    <p>• Is the tree balanced?</p>
+                    <p>• What is the height?</p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Is it balanced? What is the height?"></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> InsertBalanced always picks the middle. This creates equal left/right subtrees.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> Yes, it's balanced! The height formula is h = ⌈log₂(n+1)⌉
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> For n = 1000: h = ⌈log₂(1001)⌉
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> log₂(1001) ≈ 9.97, so ⌈9.97⌉ = 10
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Is Balanced? YES</strong><br>
+                            A tree is balanced when the algorithm ensures equal distribution. InsertBalanced always chooses the middle element, splits array into two equal (or nearly equal) halves.
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Height calculation formula</strong><br>
+                            h = ⌈log₂(n+1)⌉
+                        </div>
+                        <div class="teacher-step">
+                            <strong>For n = 1000:</strong><br>
+                            h = ⌈log₂(1000 + 1)⌉<br>
+                            h = ⌈log₂(1001)⌉<br>
+                            h = ⌈9.97⌉<br>
+                            h = 10
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Verification:</strong><br>
+                            2^9 = 512 (too few)<br>
+                            2^10 = 1024 (enough!)<br>
+                            Since 512 < 1000 < 1024, height = 10
+                        </div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Balanced trees have height ≈ log₂(n). This is MUCH shorter than skewed trees (height = n)!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Balanced: YES | Height: 10</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 12 -->
+            <div class="level-card" data-level="12">
+                <div class="level-header">
+                    <h3>Level 12 – Time Complexity of InsertBalanced</h3>
+                    <span class="level-tag">Section III, Part 3</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <p><strong>Calculate the time complexity of the InsertBalanced algorithm.</strong></p>
+                    <p>Hint: c + c×log₂(n) = c×log₂(n)</p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="What is the time complexity?"></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Each call does Insert(T, A[q]) which costs log₂(n)×c (inserting into balanced tree).
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> There are two recursive calls on half the array each.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Recurrence: T(n) = c×log₂(n) + 2T(n/2)
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> We insert n elements total, each costing log₂(n). Result: Θ(n log n)
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Step 1: Recurrence relation</strong><br>
+                            Each call does one Insert(T, A[q]) → costs log₂(n)×c<br>
+                            Two recursive calls on half the array<br>
+                            T(n) = c×log₂(n) + 2T(n/2)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 2: Tree analysis</strong><br>
+                            Level 0: 1 call with n elements → work = log₂(n)<br>
+                            Level 1: 2 calls with n/2 elements → work = 2×log₂(n/2)<br>
+                            Level 2: 4 calls with n/4 elements → work = 4×log₂(n/4)<br>
+                            Tree depth: log₂(n) levels
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 3: Total work</strong><br>
+                            Work at level k: 2^k × log₂(n/2^k) = 2^k × (log₂n - k)<br>
+                            Sum over all log₂(n) levels ≈ n × log₂(n)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Step 4: Alternative view</strong><br>
+                            We insert n elements, each costing log₂(n) → n × log₂(n)
+                        </div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Building a balanced BST from n elements costs Θ(n log n). Same as MergeSort!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(n log n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 13 -->
+            <div class="level-card" data-level="13">
+                <div class="level-header">
+                    <h3>Level 13 – After Inserting 1000 Descending Elements</h3>
+                    <span class="level-tag">Section III, Part 4</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <p><strong>We inserted 1000 new elements [n₁, n₂, n₃, ..., n₁₀₀₀] where:</strong></p>
+                    <p>• n₁ > n₂ > n₃ > ... > n₁₀₀₀ (descending order)</p>
+                    <p>• n₁ > maximum(T) (all new elements larger than everything in tree)</p>
+                    <p><strong>What is the new height? Is it balanced?</strong></p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="What happens? Is it still balanced?"></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> All new elements are LARGER than the old maximum, so they all go RIGHT.
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> But they're in descending order! n₁ > n₂ > n₃ > ...
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> n₁ inserted first → goes right. n₂ inserted next → n₂ < n₁, so goes LEFT of n₁!
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> This creates a left-skewed chain! Height ≈ 1010. NOT balanced!
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Insertion pattern analysis:</strong><br>
+                            Since ALL new elements > old maximum:<br>
+                            • They all belong on the RIGHT side of the tree<br>
+                            • But they're in descending order n₁ > n₂ > n₃ > ...<br>
+                            • n₁ inserted first → goes right of old max<br>
+                            • n₂ inserted next → n₂ < n₁, so goes LEFT of n₁<br>
+                            • n₃ inserted → n₃ < n₂, so goes LEFT of n₂<br>
+                            • This creates a left-skewed chain!
+                        </div>
+                        <div class="visualization">
+Original Balanced Tree (height ~10)
+    Root
+   /    \
+  ...   Max (old maximum)
+           \
+            n₁ ← largest new
+           /
+          n₂ ← 2nd largest
+         /
+        n₃
+       /
+      ...
+     /
+    n₁₀₀₀ ← smallest new
+</div>
+                        <div class="teacher-step">
+                            <strong>Height calculation:</strong><br>
+                            Original tree height: ≈ 10<br>
+                            New chain of 1000 elements adds to rightmost path<br>
+                            New height = 10 + 1000 = ≈ 1010
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Is balanced? NO</strong><br>
+                            Total nodes: 1000 + 1000 = 2000<br>
+                            Expected height for balanced: log₂(2000) ≈ 11<br>
+                            Actual height: ≈ 1010<br>
+                            Right subtree is MUCH deeper than left!
+                        </div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> Sorted insertion (ascending or descending) creates skewed trees! Always use InsertBalanced or rebalance after bulk insertions.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Height: ≈1010 | Balanced: NO</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 14 -->
+            <div class="level-card" data-level="14">
+                <div class="level-header">
+                    <h3>Level 14 – Rebalancing the Tree (BONUS)</h3>
+                    <span class="level-tag">Section III, Part 5</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📝 Original Question:</h4>
+                    <p><strong>Write an algorithm to rebalance the unbalanced tree.</strong></p>
+                    <p>Given: Algo1(T, A) transforms tree T into sorted array A</p>
+                </div>
+
+                <div class="try-it">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write your rebalancing algorithm..."></textarea>
+                    <button class="attempt-btn" onclick="markAttempted(this)">Mark as attempted</button>
+                </div>
+
+                <div class="hints-container">
+                    <button class="hint-btn" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <div class="hint">
+                        <strong>Hint 1:</strong> Step 1: Convert tree to sorted array (use Algo1)
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 2:</strong> Step 2: Create new empty tree
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 3:</strong> Step 3: Use InsertBalanced to build balanced tree from array
+                    </div>
+                    <div class="hint">
+                        <strong>Hint 4:</strong> BONUS: Algo1 uses in-order traversal! Left → Node → Right gives sorted order.
+                    </div>
+                </div>
+
+                <div class="teacher-method">
+                    <button class="teacher-toggle" onclick="toggleTeacher(this)">📖 Teacher's Method (Full Explanation)</button>
+                    <div class="teacher-content">
+                        <div class="teacher-step">
+                            <strong>Rebalancing Algorithm:</strong><br>
+                            <pre>RebalanceTree(T) {
+    A = new array[T.size]
+    Algo1(T, A)              // Convert tree to sorted array
+    T = new empty tree
+    InsertBalanced(T, A, 1, A.length)
+    return T
+}</pre>
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Strategy:</strong><br>
+                            1. Use Algo1 to convert unbalanced tree → sorted array<br>
+                            2. Create new empty tree<br>
+                            3. Use InsertBalanced to build balanced tree from array
+                        </div>
+                        <div class="teacher-step">
+                            <strong>Complexity:</strong><br>
+                            Θ(n) + Θ(n log n) = Θ(n log n)
+                        </div>
+                        <div class="teacher-step">
+                            <strong>BONUS - Tree to Array Algorithm (Algo1):</strong><br>
+                            <pre>Algo1(T, A) {
+    index = 0
+    InOrderTraversal(T.root, A, index)
+}
+
+InOrderTraversal(node, A, index) {
+    if node == null
+        return
+
+    InOrderTraversal(node.left, A, index)  // Left
+    A[index] = node.value                   // Node
+    index++
+    InOrderTraversal(node.right, A, index)  // Right
+}</pre>
+                        </div>
+                        <div class="visualization">
+Tree:        4
+           /   \
+          2     6
+         / \   / \
+        1   3 5   7
+
+In-Order: [1, 2, 3, 4, 5, 6, 7] ✓ Sorted!
+
+Why? BST property: left < node < right
+In-order: left, then node, then right
+→ naturally gives ascending order!
+</div>
+                        <div class="key-insight">
+                            <strong>💡 Key Insight:</strong> In-order traversal of BST produces sorted array! This is the secret to rebalancing.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">Θ(n log n)</div>
+                <button class="master-btn" onclick="markMastered(this)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; color: white; padding: 40px 20px; opacity: 0.8;">
+            <p style="font-size: 1.2rem;">🎉 You've completed all 14 levels! 🎉</p>
+            <p>Your COMP411 midterm is going to be easy now!</p>
+            <p style="font-size: 0.9rem; margin-top: 20px;">Made with ❤️ for COMP411 students</p>
+        </div>
+    </div>
+
+    <script>
+        // Total number of levels
+        const TOTAL_LEVELS = 14;
+        let completedLevels = 0;
+
+        // Smooth scroll to world
+        function scrollToWorld(worldId) {
+            document.getElementById(worldId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Toggle checklist item
+        function toggleCheck(element) {
+            element.classList.toggle('checked');
+        }
+
+        // Show next hint
+        function showNextHint(button) {
+            const container = button.parentElement;
+            const hints = container.querySelectorAll('.hint');
+
+            for (let hint of hints) {
+                if (!hint.classList.contains('visible')) {
+                    hint.classList.add('visible');
+                    break;
+                }
+            }
+        }
+
+        // Toggle teacher method
+        function toggleTeacher(button) {
+            const content = button.nextElementSibling;
+            content.classList.toggle('open');
+
+            if (content.classList.contains('open')) {
+                button.textContent = '📖 Teacher\'s Method (Click to hide)';
+            } else {
+                button.textContent = '📖 Teacher\'s Method (Full Explanation)';
+            }
+        }
+
+        // Mark as attempted
+        function markAttempted(button) {
+            button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            button.textContent = '✓ Attempted';
+            button.disabled = true;
+        }
+
+        // Mark level as mastered
+        function markMastered(button) {
+            const levelCard = button.closest('.level-card');
+
+            // Only count if not already completed
+            if (!levelCard.classList.contains('completed')) {
+                levelCard.classList.add('completed');
+                completedLevels++;
+                updateProgress();
+
+                // Confetti effect (simple)
+                button.textContent = '🎉 Mastered!';
+                button.disabled = true;
+
+                // Save progress to localStorage
+                saveProgress();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const percentage = Math.round((completedLevels / TOTAL_LEVELS) * 100);
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            const completed = [];
+            document.querySelectorAll('.level-card.completed').forEach(card => {
+                completed.push(card.dataset.level);
+            });
+            localStorage.setItem('comp411Progress', JSON.stringify(completed));
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('comp411Progress');
+            if (saved) {
+                const completed = JSON.parse(saved);
+                completed.forEach(levelNum => {
+                    const card = document.querySelector(`.level-card[data-level="${levelNum}"]`);
+                    if (card && !card.classList.contains('completed')) {
+                        card.classList.add('completed');
+                        const button = card.querySelector('.master-btn');
+                        if (button) {
+                            button.textContent = '🎉 Mastered!';
+                            button.disabled = true;
+                        }
+                        completedLevels++;
+                    }
+                });
+                updateProgress();
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Press 'r' to reset progress
+                if (e.key === 'r' && e.ctrlKey) {
+                    if (confirm('Reset all progress?')) {
+                        localStorage.removeItem('comp411Progress');
+                        location.reload();
+                    }
+                }
+            });
+        });
+
+        // Easter egg: Konami code
+        let konamiCode = [];
+        const konamiPattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.key);
+            konamiCode = konamiCode.slice(-10);
+
+            if (konamiCode.join(',') === konamiPattern.join(',')) {
+                alert('🎮 CHEAT CODE ACTIVATED! All levels unlocked! (Just kidding, you still need to learn! 😄)');
+            }
+        });
+    </script>
+</body>
+</html>
